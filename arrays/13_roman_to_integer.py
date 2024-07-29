@@ -20,62 +20,32 @@ Given a roman numeral, convert it to an integer.
 """
 class Solution:
     def romanToInt(self, s: str) -> int:
-        event_date = list(s)
-        i = 0
-        count = 0
-        while len(event_date) > 0:
-            if len(event_date) > 0 and event_date[0] == 'M':
-                count += 1000
-                del event_date[0]
-            if len(event_date) > 0 and event_date[0] == 'D':
-                count += 500
-                del event_date[0]
-            if len(event_date) > 0 and event_date[0] == 'L':
-                count += 50
-                del event_date[0]
-            if len(event_date) > 0 and event_date[0] == 'V':
-                count += 5
-                del event_date[0]
+        roman_to_int = {
+            'I': 1,
+            'V': 5,
+            'X': 10,
+            'L': 50,
+            'C': 100,
+            'D': 500,
+            'M': 1000
+        }
 
+        total = 0
+        prev_value = 0
 
-            if len(event_date)>0 and event_date[0] == 'C':
-                if len(event_date)>1 and event_date[1] == 'M':
-                    count += 900
-                    del event_date[:2]
+        # Iterate through the string in reverse order
+        for char in reversed(s):
+            current_value = roman_to_int[char]
+            # If the current value is less than the previous value, subtract it from the total
+            if current_value < prev_value:
+                total -= current_value
+            else:
+                # Otherwise, add it to the total
+                total += current_value
+            # Update the previous value
+            prev_value = current_value
 
-                elif len(event_date)>1 and event_date[1] == 'D':
-                    count += 400
-                    del event_date[:2]
-                else:
-                    count += 100
-                    del event_date[0]
-
-            if len(event_date)>0 and event_date[0] == 'X':
-                if len(event_date) > 1 and event_date[1] == 'L':
-                    count += 40
-                    del event_date[:2]
-
-                elif len(event_date) > 1 and event_date[1] == 'C':
-                    count += 90
-                    del event_date[:2]
-                else:
-                    count += 10
-                    del event_date[0]
-
-            if len(event_date)>0 and event_date[0] == 'I':
-                if len(event_date) > 1 and event_date[1] == 'V':
-                    count += 4
-                    del event_date[:2]
-
-                elif len(event_date) > 1 and event_date[1] == 'X':
-                    count += 9
-                    del event_date[:2]
-                else:
-                    count += 1
-                    del event_date[0]
-
-
-        return count
+        return total
 
 
 s = "MDL"
